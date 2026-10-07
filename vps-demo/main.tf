@@ -16,6 +16,10 @@ provider "docker" {
   }
 }
 
+resource "docker_network" "app_network" {
+  name = "terraform-go-network"
+}
+
 resource "docker_image" "app" {
   name = "ghcr.io/orporsoft/terraform-go-demo:${var.image_tag}"
 }
@@ -33,6 +37,10 @@ resource "docker_container" "app" {
     internal = 8080
     external = var.external_port
     ip       = "127.0.0.1"
+  }
+
+  networks_advanced {
+    name = docker_network.app_network.name
   }
 }
 

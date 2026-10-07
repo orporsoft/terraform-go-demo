@@ -20,6 +20,6 @@ variable "app_env" {
 
 variable "api_key" {
   description = "API key for the application"
-  type = string
-  sensitive = true
+  type        = string
+  sensitive   = true
 }

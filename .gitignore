@@ -1,3 +1,13 @@
-.env
+# Terraform
+vps-demo/.terraform/
+vps-demo/terraform.tfstate
+vps-demo/terraform.tfstate.*
+vps-demo/*.tfvars
+vps-demo/*.tfvars.json
+
+# Go
+bin/
+dist/
+
+# OS
 .DS_Store
-*.log
