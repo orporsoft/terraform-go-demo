@@ -23,3 +23,9 @@ variable "api_key" {
   type        = string
   sensitive   = true
 }
+
+variable "postgres_password" {
+  description = "PostgresSQL password"
+  type        = string
+  sensitive   = true
+}

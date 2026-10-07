@@ -31,6 +31,15 @@ resource "docker_container" "app" {
   env = [
     "APP_ENV=${var.app_env}",
     "API_KEY=${var.api_key}",
+    "DB_HOST=postgres",
+    "DB_PORT=5432",
+    "DB_NAME=orderdb",
+    "DB_USER=orderuser",
+    "DB_PASSWORD=${var.postgres_password}"
+  ]
+
+  depends_on = [
+    docker_container.postgres
   ]
 
   ports {
@@ -41,6 +50,34 @@ resource "docker_container" "app" {
 
   networks_advanced {
     name = docker_network.app_network.name
+  }
+}
+
+resource "docker_image" "postgres" {
+  name = "postgres:16-alpine"
+}
+
+resource "docker_volume" "postgres_data" {
+  name = "terraform-go-postgres-data"
+}
+
+resource "docker_container" "postgres" {
+  name  = "terraform-go-postgres"
+  image = docker_image.postgres.image_id
+
+  env = [
+    "POSTGRES_DB=orderdb",
+    "POSTGRES_USER=orderuser",
+    "POSTGRES_PASSWORD=${var.postgres_password}"
+  ]
+
+  networks_advanced {
+    name = docker_network.app_network.name
+  }
+
+  volumes {
+    volume_name    = docker_volume.postgres_data.name
+    container_path = "/var/lib/postgresql/data"
   }
 }
 
